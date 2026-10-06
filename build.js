@@ -14,4 +14,6 @@ fs.writeFileSync(here('docs', 'index.html'), '<!doctype html>\n<html lang="en">\
 for (const [k, s] of [...h.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m, k) => [k, m[1]])) {
   try { new Function(s); } catch (e) { console.error('script', k, 'has a syntax error:', e.message); process.exit(1); }
 }
-console.log('built docs/index.html (' + (fs.statSync(here('docs', 'index.html')).size / 1024).toFixed(0) + ' KB)');
+// GitHub Pages may serve either the repo root or /docs, so write the page to both
+fs.copyFileSync(here('docs', 'index.html'), here('index.html'));
+console.log('built docs/index.html (' + (fs.statSync(here('docs', 'index.html')).size / 1024).toFixed(0) + ' KB) and index.html');

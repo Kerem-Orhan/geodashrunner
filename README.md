@@ -29,7 +29,7 @@ Practice: `Z` checkpoint · `X` remove checkpoint · `N` noclip · `H` hitboxes.
 | `data/objclass.json` | Which objects are solid, deadly, slopes, orbs, pads, portals, or triggers, with hitboxes. |
 | `data/rendertab.json` | Object ID → sprite frame, layer, default colors, and sub-pieces (adapted from gdrweb). |
 | `tools/` | Scripts that regenerate the two data tables. |
-| `docs/index.html` | The built single-file page that GitHub Pages serves. |
+| `index.html`, `docs/index.html` | The built single-file page (same file in both places, so GitHub Pages works from the root or `/docs`). |
 
 ## Building
 
