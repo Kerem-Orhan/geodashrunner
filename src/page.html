@@ -168,6 +168,13 @@ kbd { font: 11.5px var(--f-mono); padding: 1px 6px; border-radius: 5px; border: 
           <div class="row">
             <label class="check" for="deco"><input id="deco" type="checkbox" checked> Show decoration (needs game art)</label>
             <label class="check" for="ldm"><input id="ldm" type="checkbox"> Low detail mode</label>
+            <label class="check" for="quality">Graphics
+              <select id="quality" style="width:auto">
+                <option value="low">Low (720p)</option>
+                <option value="normal" selected>Normal (1080p)</option>
+                <option value="ultra">Ultra (native)</option>
+              </select>
+            </label>
             <span class="check">Art: <span id="artState">Simple shapes</span></span>
           </div>
           <div class="row">

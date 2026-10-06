@@ -14,7 +14,7 @@ const S = {
   xml: null, levels: [], level: null, L: null, sim: null,
   songFiles: new Map(), songBuffer: null, songName: '',
   sheets: [], frames: new Map(), fntFiles: new Map(), fontPngs: new Map(), font: null,  // frame name -> {tex, u0,v0,u1,v1, w,h, ox,oy, rot}
-  practice: false, noclip: false, hitboxes: false, showDeco: true, ldm: false, safe: false,
+  practice: false, noclip: false, hitboxes: false, showDeco: true, ldm: false, safe: false, quality: 'normal',
   startIndex: -1, attempts: 0, checkpoints: [], running: false,
   deathAt: 0, best: 0, flash: 0, noclipHits: 0,
 };
@@ -625,7 +625,7 @@ const R = (() => {
     // Cap the internal resolution near 1080p: Grief stacks thousands of translucent sprites,
     // so drawing at full 4K / high-DPI resolution costs several times more GPU work for little visible gain.
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const MAX_PIXELS = 1920 * 1080;
+    const MAX_PIXELS = S.quality === 'low' ? 1280 * 720 : S.quality === 'ultra' ? Infinity : 1920 * 1080;
     const area = canvas.clientWidth * canvas.clientHeight * dpr * dpr;
     if (area > MAX_PIXELS) dpr *= Math.sqrt(MAX_PIXELS / area);
     const w = Math.max(1, Math.round(canvas.clientWidth * dpr)), h = Math.max(1, Math.round(canvas.clientHeight * dpr));
@@ -880,6 +880,10 @@ $('#tRm').addEventListener('click', () => { removeCheckpoint(); canvas.focus(); 
 $('#tMenu').addEventListener('click', toMenu);
 $('#deco').addEventListener('change', e => { S.showDeco = e.target.checked; });
 $('#ldm').addEventListener('change', e => { S.ldm = e.target.checked; });
+// Graphics quality: internal render resolution (remembered per browser when storage is available)
+try { const q = localStorage.getItem('graphicsQuality'); if (q === 'low' || q === 'normal' || q === 'ultra') S.quality = q; } catch (_) {}
+$('#quality').value = S.quality;
+$('#quality').addEventListener('change', e => { S.quality = e.target.value; try { localStorage.setItem('graphicsQuality', S.quality); } catch (_) {} });
 
 
 $('#again').addEventListener('click', () => { $('#result').hidden = true; S.wonShown = false; restart(); });
