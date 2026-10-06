@@ -1834,8 +1834,13 @@ const R = (() => {
   const vis = [];
   let W = 0, H = 0, dpr = 1;
   function resize() {
+    // Cap the internal resolution near 1080p: Grief stacks thousands of translucent sprites,
+    // so drawing at full 4K / high-DPI resolution costs several times more GPU work for little visible gain.
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+    const MAX_PIXELS = 1920 * 1080;
+    const area = canvas.clientWidth * canvas.clientHeight * dpr * dpr;
+    if (area > MAX_PIXELS) dpr *= Math.sqrt(MAX_PIXELS / area);
+    const w = Math.max(1, Math.round(canvas.clientWidth * dpr)), h = Math.max(1, Math.round(canvas.clientHeight * dpr));
     if (w !== W || h !== H) { W = canvas.width = w; H = canvas.height = h; }
   }
   const cam = { x: 0, y: 0, ty: 0 };
