@@ -1,0 +1,21 @@
+# Never commit Geometry Dash's own files: players bring their own.
+*.dat
+*.gmd
+*.mp3
+*.ogg
+*.wav
+*.m4a
+*.plist
+*.fnt
+GJ_GameSheet*.png
+FireSheet*.png
+bigFont*.png
+gjFont*.png
+Resources/
+GeometryDash/
+
+node_modules/
+package/
+*.tgz
+data/objtable.json
+.DS_Store
