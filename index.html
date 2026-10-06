@@ -1529,16 +1529,12 @@ function levelNow() {
 }
 // Convert an input event's timestamp to level time
 function levelTimeOfEvent(ev) {
+  // Time a click with the same clock the screen uses: a click d ms ago lands d ms before the
+  // currently displayed moment. (Mixing the audio output timestamp with the reported output
+  // latency could schedule clicks later than what's on screen, which felt like input lag.)
   const pe = ev.timeStamp || performance.now();
-  if (audio.ctx && S.clockAudio && audio.ctx.getOutputTimestamp) {
-    const ts = audio.ctx.getOutputTimestamp();
-    if (ts.performanceTime) {
-      const ctxAtEvent = ts.contextTime + (pe - ts.performanceTime) / 1000;
-      return ctxAtEvent - audio.startCtx;   // contextTime is already the output (heard) time
-    }
-  }
-  if (audio.ctx && S.clockAudio) return levelNow() - (performance.now() - pe) / 1000;
-  return (pe - S.perfStart) / 1000;
+  const ago = Math.max(0, (performance.now() - pe) / 1000);
+  return levelNow() - ago;
 }
 function startClock(levelTimeAtStart, songTime) {
   stopSong();
